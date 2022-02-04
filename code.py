@@ -8,15 +8,13 @@ from helpers import has_expired
 
 
 class Game:
-    simon = None
-    is_game_active = False
-    leds = tuple([Hardware.led(x['led']) for x in BUTTONS])
-    switches = tuple([Hardware.pin(x['switch']) for x in BUTTONS])
-    tones = tuple([x['tone'] for x in BUTTONS])
-    start_button = Hardware.switch(START_BUTTON)
-    correct_pin = None
-
     def __init__(self):
+        self.is_game_active = False
+        self.leds = tuple([Hardware.led(x['led']) for x in BUTTONS])
+        self.switches = tuple([Hardware.pin(x['switch']) for x in BUTTONS])
+        self.tones = tuple([x['tone'] for x in BUTTONS])
+        self.start_button = Hardware.switch(START_BUTTON)
+        self.correct_pin = None
         self.simon = Simon(len(self.leds), self.on_computer_turn, self.on_player_turn, self.on_game_end)
         self.on_bootup()
 
