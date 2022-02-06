@@ -1,7 +1,7 @@
 import keypad
 import simpleio
 from time import sleep, time as now
-from constants import BUTTONS, START_BUTTON, TICK, TIMEOUT, ERROR_TONE, SPEAKER_PIN, NUM_OF_ROUNDS, TEST_MODE
+from constants import TEST_MODE, NUM_OF_ROUNDS, TICK, TIMEOUT, BUTTONS, START_BUTTON, SPEAKER
 from engine import Simon
 from hardware import Hardware
 from helpers import has_expired
@@ -11,7 +11,7 @@ class Game:
     def __init__(self):
         self.is_game_active = False
         self.leds = tuple([Hardware.led(x['led']) for x in BUTTONS])
-        self.switches = tuple([Hardware.pin(x['switch']) for x in BUTTONS])
+        self.switches = tuple([x['switch'] for x in BUTTONS])
         self.tones = tuple([x['tone'] for x in BUTTONS])
         self.start_button = Hardware.switch(START_BUTTON)
         self.correct_pin = None
@@ -64,12 +64,12 @@ class Game:
     def ping_led(self, pin, error=False, t=TICK):
         led = self.leds[pin]
         if error:
-            sound = ERROR_TONE
+            sound = SPEAKER['error_tone']
         else:
             sound = self.tones[pin]
 
         led.value = True
-        simpleio.tone(Hardware.pin(SPEAKER_PIN), sound, t)
+        simpleio.tone(SPEAKER['pin'], sound, t)
         led.value = False
 
     def on_error(self):
